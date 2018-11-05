@@ -1,0 +1,21 @@
+USE rdavis54assign2db;
+
+SELECT * FROM product;
+SELECT * FROM agent;
+SELECT * FROM customer;
+SELECT * FROM purchase; 
+
+CREATE VIEW myView AS SELECT firstName, lastName, description, purchase.quantity, cost, purchase.quantity*cost AS "Total Cost" FROM (customer INNER JOIN purchase ON customer.customerID = purchase.customerID) INNER JOIN product ON product.productID = purchase.productID ORDER BY lastName ASC;
+
+SELECT * FROM myView;
+
+SELECT * FROM myView WHERE quantity*cost > 100;
+
+DELETE FROM product WHERE description = "Chin Up Bar";
+
+SELECT * FROM product;
+
+DELETE FROM agent WHERE city = "Springfield";
+--The row that contains "Springfield" was not deleted because the agent currently works with customers and this should not be allowed
+--All other rows do not contain "Springfield" so they were not deleted
+

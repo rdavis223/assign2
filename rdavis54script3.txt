@@ -1,0 +1,31 @@
+USE rdavis54assign2db;
+--  Query 1
+SELECT description FROM product;
+--  Query 2
+SELECT DISTINCT city FROM customer;
+--  Query 3
+SELECT * FROM agent ORDER BY city ASC;
+--  Query 4
+SELECT firstName, lastName FROM customer WHERE city = "Springfield";
+--  Query 5
+SELECT lastName FROM customer WHERE agentID = "11";
+--  Query 6
+SELECT description FROM product WHERE description LIKE '%pad%';
+--  Query 7
+SELECT lastName, description, purchase.quantity FROM (customer INNER JOIN purchase ON customer.customerID = purchase.customerID) INNER JOIN product ON purchase.productID = product.productID;
+--  Query 8
+SELECT COUNT(*) AS "Homer's Total Purchases" FROM purchase WHERE purchase.customerID = (SELECT customerID FROM customer WHERE firstName = "Homer");
+--  Query 9
+SELECT firstName, lastName, COUNT(*) AS "Total Purchases" FROM purchase INNER JOIN customer ON purchase.customerID = customer.customerID GROUP BY firstName, lastName;
+--  Query 10
+SELECT description, quantity FROM product WHERE product.productID NOT IN (SELECT productID from purchase);
+--Query 11
+SELECT description, quantity FROM product WHERE product.productID NOT IN (SELECT productID from purchase WHERE purchase.customerID = (SELECT customerID FROM customer WHERE firstName = "Fred" and lastName = "Flintstone"));
+--  Query 12
+SELECT customer.firstName, customer.lastName, agent.firstName, agent.lastName  FROM customer INNER JOIN agent ON customer.agentID = agent.agentID WHERE customer.city = agent.city;
+--  Query 13
+SELECT SUM(quantity) AS "Total Knee Pads" FROM purchase WHERE purchase.productID = "78";
+--  Query 14
+SELECT description, COUNT(customerID) FROM purchase INNER JOIN product ON purchase.productID = product.productID GROUP BY purchase.productID HAVING COUNT(customerID) > 3;
+--  Query 15
+SELECT agent.firstName, agent.lastName FROM (agent INNER JOIN customer ON agent.agentID = customer.agentID) INNER JOIN purchase ON customer.customerID = purchase.customerID WHERE purchase.productID = "78";

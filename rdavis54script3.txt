@@ -19,9 +19,9 @@ SELECT COUNT(*) AS "Homer's Total Purchases" FROM purchase WHERE purchase.custom
 SELECT firstName, lastName, COUNT(*) AS "Total Purchases" FROM purchase INNER JOIN customer ON purchase.customerID = customer.customerID GROUP BY firstName, lastName;
 --  Query 10
 SELECT description, quantity FROM product WHERE product.productID NOT IN (SELECT productID from purchase);
---Query 11
+-- Query 11
 SELECT description, quantity FROM product WHERE product.productID NOT IN (SELECT productID from purchase WHERE purchase.customerID = (SELECT customerID FROM customer WHERE firstName = "Fred" and lastName = "Flintstone"));
---  Query 12
+-- Query 12
 SELECT customer.firstName, customer.lastName, agent.firstName, agent.lastName  FROM customer INNER JOIN agent ON customer.agentID = agent.agentID WHERE customer.city = agent.city;
 --  Query 13
 SELECT SUM(quantity) AS "Total Knee Pads" FROM purchase WHERE purchase.productID = "78";

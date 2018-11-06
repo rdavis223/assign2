@@ -1,0 +1,98 @@
+ERROR 1451 (23000) at line 18: Cannot delete or update a parent row: a foreign key constraint fails (`rdavis54assign2db`.`customer`, CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`agentID`) REFERENCES `agent` (`agentID`))
+--------------
+SELECT * FROM product
+--------------
+
+productID	description	cost	quantity
+11	Bike	99.999	200
+12	Socks	2.000	100
+44	Chin Up Bar	20.000	200
+66	Elbow pads	14.250	120
+78	Knee Pads	12.150	70
+88	Roller Blades	75.000	89
+99	Helmet	29.000	30
+--------------
+SELECT * FROM agent
+--------------
+
+agentID	firstName	lastName	city	commisionRate
+07	Ryan	Davis	Halifax	100
+11	Regis	Philbin	Boston	33
+12	Rosie	Cox	Ottawa	50
+22	Courtney	Cox	New York	25
+33	David	Letterman	Bedrock	100
+66	Rosie	ODonnell	Ottawa	100
+99	Hugh	Grant	Springfield	16
+--------------
+SELECT * FROM customer
+--------------
+
+customerID	firstName	lastName	city	agentID	phone
+10	Barney	Rubble	Boston	11	777-1234
+12	Monty	Burns	Springfield	99	789-0000
+13	Wonder	Woman	Kypto	33	888-1234
+14	Peter	Griffens	Providence	99	987-4567
+15	Fred	Flintstone	Boston	11	777-2345
+21	Homer	Simpson	Springfield	99	686-8956
+31	Sideshow	Bob	Springfield	66	686-5555
+--------------
+SELECT * FROM purchase
+--------------
+
+productID	customerID	quantity
+12	21	14
+12	31	5
+66	14	2
+66	15	2
+66	21	10
+66	31	5
+78	15	2
+78	31	5
+99	21	20
+99	31	5
+--------------
+CREATE VIEW myView AS SELECT firstName, lastName, description, purchase.quantity, cost, purchase.quantity*cost AS "Total Cost" FROM (customer INNER JOIN purchase ON customer.customerID = purchase.customerID) INNER JOIN product ON product.productID = purchase.productID ORDER BY lastName ASC
+--------------
+
+--------------
+SELECT * FROM myView
+--------------
+
+firstName	lastName	description	quantity	cost	Total Cost
+Sideshow	Bob	Socks	5	2.000	10.000
+Sideshow	Bob	Elbow pads	5	14.250	71.250
+Sideshow	Bob	Knee Pads	5	12.150	60.750
+Sideshow	Bob	Helmet	5	29.000	145.000
+Fred	Flintstone	Elbow pads	2	14.250	28.500
+Fred	Flintstone	Knee Pads	2	12.150	24.300
+Peter	Griffens	Elbow pads	2	14.250	28.500
+Homer	Simpson	Socks	14	2.000	28.000
+Homer	Simpson	Elbow pads	10	14.250	142.500
+Homer	Simpson	Helmet	20	29.000	580.000
+--------------
+SELECT * FROM myView WHERE quantity*cost > 100
+--------------
+
+firstName	lastName	description	quantity	cost	Total Cost
+Sideshow	Bob	Helmet	5	29.000	145.000
+Homer	Simpson	Elbow pads	10	14.250	142.500
+Homer	Simpson	Helmet	20	29.000	580.000
+--------------
+DELETE FROM product WHERE description = "Chin Up Bar"
+--------------
+
+--------------
+SELECT * FROM product
+--------------
+
+productID	description	cost	quantity
+11	Bike	99.999	200
+12	Socks	2.000	100
+66	Elbow pads	14.250	120
+78	Knee Pads	12.150	70
+88	Roller Blades	75.000	89
+99	Helmet	29.000	30
+--------------
+DELETE FROM agent WHERE city = "Springfield"
+--------------
+
